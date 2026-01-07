@@ -1,4 +1,4 @@
-\# ODV File Share
+# ODV File Share
 
 
 
@@ -6,13 +6,13 @@ Self-hosted file sharing service. Files are automatically deleted 24 hours after
 
 
 
-\## Tech Stack
+## Tech Stack
 
 Go (Backend), Vanilla JS + Uppy (Frontend), SQLite/Filesystem.
 
 
 
-\## Security Note
+## Security Note
 
 Ensure the secret key is strong. The application uses CF-Connecting-IP for rate limiting; ensure it runs behind Cloudflare or adjust the middleware in main.go.
 
@@ -20,13 +20,13 @@ Ensure the secret key is strong. The application uses CF-Connecting-IP for rate 
 
 
 
-\## Features:
+## Features:
 
-\- TUS Protocol: Resumable, chunked uploads
+- TUS Protocol: Resumable, chunked uploads
 
-\- Ephemeral Storage: Automatic file deletion after 24h
+- Ephemeral Storage: Automatic file deletion after 24h
 
-\- Access Control: Token-based authentication for uploads; public access for downloads.
+- Access Control: Token-based authentication for uploads; public access for downloads.
 
-\- Security: Rate limiting (IP-based), Security Headers (HSTS, CSP), Non-root Docker user.
+- Security: Rate limiting (IP-based), Security Headers (HSTS, CSP), Non-root Docker user.
 
