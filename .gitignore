@@ -1,0 +1,17 @@
+.env
+*.env
+
+uploads/
+backend/uploads/
+
+server
+backend/server
+*.exe
+*.o
+*.test
+
+.DS_Store
+Thumbs.db
+
+.vscode/
+.idea/
