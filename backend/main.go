@@ -35,7 +35,6 @@ func getVisitor(ip string) *rate.Limiter {
 		return limiter
 	}
 
-	// for last visit
 	v.lastSeen = time.Now()
 	return v.limiter
 }
@@ -61,7 +60,6 @@ func limit(next http.Handler) http.Handler {
 		// for cloudflare
 		ip := r.Header.Get("CF-Connecting-IP")
 		if ip == "" {
-			// fallback
 			ip = r.RemoteAddr
 		}
 
@@ -91,9 +89,12 @@ func cleanExpiredFiles(uploadDir string) {
 				continue
 			}
 			if time.Since(info.ModTime()) > 24*time.Hour {
-				os.Remove(filepath.Join(uploadDir, file.Name()))
+				path := filepath.Join(uploadDir, file.Name())
+				os.Remove(path)
+				if filepath.Ext(path) != ".info" {
+					os.Remove(path + ".info")
+				}
 				log.Println("sters fisier expirat", file.Name())
-			}
 		}
 	}
 }
@@ -106,7 +107,6 @@ func securityHeaders(next http.Handler) http.Handler {
 		// iframe guess
 		w.Header().Set("X-Frame-Options", "DENY")
         
-        // https
         w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 
 
@@ -134,10 +134,8 @@ func main() {
 		log.Fatal("eroare: variabila UPLOAD_SECRET nu este setata")
 	}
 
-	// make sure the folder exists
 	os.MkdirAll(uploadDir, 0755)
 
-	// background clean
 	go cleanExpiredFiles(uploadDir)
 	go cleanupVisitors()
 
@@ -171,7 +169,6 @@ func main() {
 		handler.ServeHTTP(w, r)
 	})
 
-	// limit -> security -> handler
 	http.Handle(basePath, limit(securityHeaders(uploadHandler)))
 
 	fileServer := http.FileServer(http.Dir("./static"))

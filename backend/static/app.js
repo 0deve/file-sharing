@@ -27,7 +27,7 @@ const uppy = new Uppy()
     })
     .use(Tus, { 
         endpoint: '/files/', 
-        chunkSize: 5 * 1024 * 1024, // 5MB for cloudflare
+        chunkSize: 5 * 1024 * 1024,
         headers: {
             'X-Auth-Token': savedSecret || ''
         }
@@ -56,6 +56,21 @@ uppy.on('complete', (result) => {
 
         const small = document.createElement('small');
         small.textContent = 'Expira in 24h';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.textContent = 'Copy';
+        copyBtn.style.marginLeft = '10px';
+        copyBtn.style.padding = '5px 10px';
+        copyBtn.style.fontSize = '0.8rem';
+        
+        copyBtn.onclick = () => {
+            navigator.clipboard.writeText(uploadURL).then(() => {
+                copyBtn.textContent = 'Copiat!';
+                setTimeout(() => copyBtn.textContent = 'Copy', 2000);
+            });
+        };
+
+        pLink.appendChild(copyBtn);
 
         box.appendChild(pName);
         box.appendChild(pLink);
